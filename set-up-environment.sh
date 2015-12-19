@@ -16,7 +16,7 @@ curl -s -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh
 
 echo "Installing Powerline patched fonts (for special oh-my-zsh themes)..."
 cd /tmp
-git clone https://github.com/powerline/fonts.git
+git clone --depth=1 https://github.com/powerline/fonts.git
 cd fonts
 ./install.sh
 cd ~
@@ -28,6 +28,7 @@ brew install mysql
 brew install rabbitmq
 brew install elixir
 brew install go
+brew install rust
 
 # Now move these dotfiles into place.
 ln -snf $DIR/.vimrc ~/.vimrc
@@ -38,5 +39,7 @@ echo "Configuring Vim..."
 mkdir -p ~/.vim/autoload ~/.vim/bundle
 curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 cd ~/.vim/bundle
-git clone https://github.com/elixir-lang/vim-elixir.git
-git clone git://github.com/altercation/vim-colors-solarized.git
+git clone --depth=1 https://github.com/elixir-lang/vim-elixir.git vim-elixer
+git clone --depth=1 https://github.com/rust-lang/rust.vim.git vim-rust
+git clone --depth=1 https://github.com/fatih/vim-go.git vim-go
+git clone --depth=1 git://github.com/altercation/vim-colors-solarized.git vim-solarized
