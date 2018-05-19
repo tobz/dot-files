@@ -24,22 +24,21 @@ rm -rf /tmp/fonts
 
 # Now install some stuff we definitely need.
 echo "Installing development tools / languages / runtimes / etc..."
+brew install neovim --with-python3
 brew install mysql
 brew install rabbitmq
 brew install elixir
 brew install go
-brew install rust
+brew install rustup
+
+# Configure our Rust environment.
+rustup self update
+rustup install nightly
+rustup component add rls-preview --toolchain nightly
+rustup component add rust-analysis --toolchain nightly
+rustup component add rust-src --toolchain nightly
 
 # Now move these dotfiles into place.
-ln -snf $DIR/.vimrc ~/.vimrc
+mkdir -p ~/.config/nvim
+ln -snf $DIR/nvim/init.vim ~/.config/nvim/init.vim
 ln -snf $DIR/.zshrc ~/.zshrc
-
-# Time to bootstrap Vim.
-echo "Configuring Vim..."
-mkdir -p ~/.vim/autoload ~/.vim/bundle
-curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-cd ~/.vim/bundle
-git clone --depth=1 https://github.com/elixir-lang/vim-elixir.git vim-elixer
-git clone --depth=1 https://github.com/rust-lang/rust.vim.git vim-rust
-git clone --depth=1 https://github.com/fatih/vim-go.git vim-go
-git clone --depth=1 git://github.com/altercation/vim-colors-solarized.git vim-solarized
