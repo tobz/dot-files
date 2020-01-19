@@ -8,6 +8,9 @@ if filereadable(expand("~/.vimrc.before"))
   source ~/.vimrc.before
 endif
 
+let g:python_host_prog = '/Users/tlawrence/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog = '/Users/tlawrence/.pyenv/versions/neovim3/bin/python'
+
 " ====================== Plug  =======================
 call plug#begin('~/.config/nvim/plugged')
 Plug 'altercation/vim-colors-solarized'
@@ -15,8 +18,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'elixir-editors/vim-elixir'
 Plug 'fatih/vim-go'
 Plug 'rust-lang/rust.vim'
-Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'hashivim/vim-terraform'
 Plug 'vim-syntastic/syntastic'
 Plug 'juliosueiras/vim-terraform-completion'
@@ -128,17 +130,29 @@ set smartcase       " ...unless we type a capital
 " ================ Rust =============================
 let g:autofmt_autosave = 1
 
-" ============== Language Server ====================
-nnoremap <leader>lcs :LanguageClientStart<CR>
-let g:LanguageClient_autoStart = 1
+" ================ CoC ==============================
+set cmdheight=2
+set updatetime=300
 
-let g:LanguageClient_serverCommands = {
-    \ 'python': ['pyls'],
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'go': ['go-langserver'] }
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-noremap <silent> H :call LanguageClient_textDocument_hover()<CR>
-noremap <silent> Z :call LanguageClient_textDocument_definition()<CR>
-noremap <silent> R :call LanguageClient_textDocument_rename()<CR>
-noremap <silent> S :call LanugageClient_textDocument_documentSymbol()<CR>
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+nnoremap <silent> h :call <SID>show_documentation()<CR>
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction<
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction

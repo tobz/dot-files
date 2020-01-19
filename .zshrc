@@ -6,7 +6,7 @@ export ZSH=~/.oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 export TERM=xterm-256color
-ZSH_THEME="agnoster"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -46,7 +46,9 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=()
+
+[[ -s "/usr/local/etc/grc.zsh" ]] && source /usr/local/etc/grc.zsh
 
 # User configuration
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -65,6 +67,30 @@ export GOPATH=$HOME/.go
 export PATH="$PATH:$GOPATH/bin"
 
 alias vim="nvim"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+export PYENV_ROOT="$(pyenv root)"
+
+alias gcheckout="git checkout"
+alias gcommit="git commit"
+alias gpush="git push origin"
+alias gpull="git pull origin"
 
 # Add in extra configuration here so that we can separate work bits from personal bits.
 source ~/.config/zsh/work
+
+# added by travis gem
+[ -f /Users/tlawrence/.travis/travis.sh ] && source /Users/tlawrence/.travis/travis.sh
+fpath+=${ZDOTDIR:-~}/.zsh_functions
+export PATH="/usr/local/opt/php@7.2/bin:$PATH"
+export PATH="/usr/local/opt/php@7.2/sbin:$PATH"
+
+export PATH="/Users/tlawrence/bin:$PATH"
+
+export FPATH="/Users/tlawrence/.wf/zsh-completion:$FPATH"
+compinit
+
+export PATH="/Users/tlawrence/bin:$PATH"
+export PATH="/usr/local/opt/php@7.2/bin:$PATH"
+export PATH="/usr/local/opt/php@7.2/sbin:$PATH"
+export PATH="/usr/local/opt/git/bin:$PATH"
